@@ -1,0 +1,13 @@
+{
+  "name": "@sy-js/constants",
+  "version": "1.0.6",
+  "description": "",
+  "main": "index.ts",
+  "files": [
+    "index.ts",
+    "map/**"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}

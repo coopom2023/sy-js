@@ -1,0 +1,99 @@
+/**
+ * this is the main configuration file of your bit workspace.
+ * for full documentation, please see: https://bit.dev/docs/workspace/workspace-configuration
+ **/{
+  "$schema": "https://static.bit.dev/teambit/schemas/schema.json",
+  /**
+   * main configuration of the Bit workspace.
+   **/
+  "teambit.workspace/workspace": {
+    /**
+     * the name of the component workspace. used for development purposes.
+     **/
+    "name": "bit-workspace",
+    /**
+     * set the icon to be shown on the Bit server.
+     **/
+    "icon": "https://static.bit.dev/bit-logo.svg",
+    /**
+     * default directory to place a component during `bit import` and `bit create`.
+     * the following placeholders are available:
+     * name - component name includes namespace, e.g. 'ui/button'.
+     * scopeId - full scope-id includes the owner, e.g. 'teambit.compilation'.
+     * scope - scope name only, e.g. 'compilation'.
+     * owner - owner name in bit.dev, e.g. 'teambit'.
+     **/
+    "defaultDirectory": "{scope}/{name}",
+    /**
+     * default scope for all components in workspace.
+     **/
+    "defaultScope": "sy-js.scope-react",
+    "resolveEnvsFromRoots": true
+  },
+  /**
+   * main configuration for component dependency resolution.
+   **/
+  "teambit.dependencies/dependency-resolver": {
+    /**
+     * choose the package manager for Bit to use. you can choose between 'yarn', 'pnpm'
+     */
+    "packageManager": "teambit.dependencies/pnpm",
+    "policy": {
+      "dependencies": {
+        "@teambit/defender.eslint-linter": "1.0.2",
+        "@teambit/defender.jest-tester": "0.0.12",
+        "@teambit/defender.prettier-formatter": "1.0.0",
+        "@teambit/dependencies.modules.packages-excluder": "0.0.70",
+        "@teambit/envs.docs.env-overview-template": "^0.0.2",
+        "@teambit/mdx.ui.mdx-scope-context": "0.0.496",
+        "@teambit/preview.react-preview": "0.0.38",
+        "@teambit/react.mounter": "0.0.10",
+        "@teambit/react.react-env": "0.1.11",
+        "@teambit/typescript.typescript-compiler": "2.0.1",
+        "@teambit/vue.dev-services.compiler.vue-compiler": "^0.0.16",
+        "@teambit/vue.dev-services.linter.vue-eslint-config": "^0.0.4",
+        "@teambit/vue.dev-services.preview.vue-docs-template": "^0.0.4",
+        "@teambit/vue.dev-services.preview.vue-mounter": "^0.0.4",
+        "@teambit/vue.dev-services.preview.vue-preview": "^0.0.9",
+        "@teambit/vue.dev-services.tester.vue-jest-config": "^0.0.8",
+        "@teambit/vue.examples.my-dummy-wrapper": "^0.0.7",
+        "@teambit/vue.vue": "^0.1.31",
+        "eslint": "^7.28.0"
+      },
+      "peerDependencies": {}
+    },
+    "linkCoreAspects": true,
+    "rootComponents": true
+  },
+  "teambit.generator/generator": {
+    // "envs": ["sy-js.scope-react/envs/my-react-env"]
+    // "envs": ["sy-js.scope-vue/envs/my-vue-env"]
+    "envs": [
+      "sy-js.scope-vue/envs/my-vue-env",
+      "sy-js.scope-react/envs/my-react-env"
+    ]
+  },
+  "teambit.workspace/variants": {
+    "*": {
+      // "apps/my-app": {
+      //   "packageJson": {
+      //     "name": "@sy-js/apps-my-app"
+      //   }
+      // }
+      "teambit.pkg/pkg": {
+        "packageManagerPublishArgs": [
+          "--access public"
+        ],
+        "packageJson": {
+          "name": "@{scope}/{name}",
+          // "name": "@sy-js-{scope}/{name}",
+          // "name": "@sy-js/{name}",
+          // "name": "@sy-js/my-apps",
+          "private": false
+        }
+      }
+    }
+  },
+  "sy-js.scope-vue/apps/my-app": {},
+  "sy-org.sy-js/apps/vue-app": {}
+}

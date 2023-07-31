@@ -1,0 +1,10 @@
+/**
+ * @see https://bit.dev/reference/typescript/typescript-config
+ */
+{
+  "extends": "@teambit/vue.vue/config/tsconfig.json",
+  "compilerOptions": {
+  },
+  "exclude": ["artifacts", "public", "dist", "node_modules", "package.json", "**/*.cjs"],
+  "include": ["**/*", "**/*.json"]
+}
