@@ -1,10 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 
+const sharedArrayBufferHeaders = {
+  'Access-Control-Allow-Headers': 'Origin,X-Requested-With,Content-Type,Accept',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+  'Cross-Origin-Embedder-Policy': 'require-corp',
+  'Cross-Origin-Opener-Policy': 'same-origin',
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
   define: {
-    'CESIUM_BASE_URL': JSON.stringify('/lib/Cesium'),
+    // 本地cesium库
+    // 'CESIUM_BASE_URL': JSON.stringify('/lib/Cesium'),
+    // 代理网络cesium库
+    'CESIUM_BASE_URL': JSON.stringify('/Build/Cesium'),
   },
   plugins: [react()],
   server: {
@@ -12,11 +23,7 @@ export default defineConfig({
     headers: {
       // SSmap 必须设置跨域头，否则无法使用 SharedArrayBuffer
       // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer
-      'Access-Control-Allow-Headers': 'Origin,X-Requested-With,Content-Type,Accept',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
-      'Cross-Origin-Embedder-Policy': 'require-corp',
-      'Cross-Origin-Opener-Policy': 'same-origin',
+      ...sharedArrayBufferHeaders,
     },
     proxy: {
       // ssmap遥感影像图代理
@@ -48,7 +55,25 @@ export default defineConfig({
       '/DataServer': {
         target: 'http://t0.tianditu.gov.cn',
         changeOrigin: true,
-      }
+      },
+      // cesium 静态cdn资源
+      '/Build/Cesium': {
+        target: 'https://unpkg.com/cesium@1.107.2/',
+        changeOrigin: true,
+        selfHandleResponse: true,
+        configure: (proxy, options) => {
+          proxy.on('proxyRes', (proxyRes, req, res) => {
+            console.log(req.url)
+            for (const h in proxyRes.headers) {
+              res.setHeader(h, proxyRes.headers[h])
+            }
+            for (const k in sharedArrayBufferHeaders) {
+              res.setHeader(k, sharedArrayBufferHeaders[k])
+            }
+            proxyRes.pipe(res)
+          })
+        }
+      },
     },
   }
 })
