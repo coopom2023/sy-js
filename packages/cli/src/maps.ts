@@ -26,16 +26,16 @@ const maps = [
     display: 'SSmap',
     color: red,
   },
-  {
-    name: 'supermap_iclient',
-    display: 'SuperMap iClient',
-    color: reset,
-  },
-  {
-    name: 'supermap_iclient3d',
-    display: 'SuperMap iClient 3D',
-    color: yellow,
-  },
+  // {
+  //   name: 'supermap_iclient',
+  //   display: 'SuperMap iClient',
+  //   color: reset,
+  // },
+  // {
+  //   name: 'supermap_iclient3d',
+  //   display: 'SuperMap iClient 3D',
+  //   color: yellow,
+  // },
 ]
 
 export const layers = [

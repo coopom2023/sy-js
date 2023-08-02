@@ -36,6 +36,12 @@ export const routes: RouterOptions['routes'] = [
         meta: { displayName: 'MapboxGL' }
       },
       {
+        path: 'mapv',
+        name: 'map-mapv',
+        component: () => import('../pages/map/mapv/index.vue'),
+        meta: { displayName: 'Mapv - 需要修改 vite.config.ts 注释 server.headers.sharedArrayBufferHeaders' }
+      },
+      {
         path: 'ssmap',
         name: 'map-ssmap',
         component: () => import('../pages/map/ssmap/index.vue'),

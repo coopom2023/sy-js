@@ -10,6 +10,19 @@ const sharedArrayBufferHeaders = {
   'Cross-Origin-Opener-Policy': 'same-origin',
 }
 
+const proxyConfigure = (proxy) => {
+  proxy.on('proxyRes', (proxyRes, req, res) => {
+    console.log(req.url)
+    for (const h in proxyRes.headers) {
+      res.setHeader(h, proxyRes.headers[h])
+    }
+    for (const k in sharedArrayBufferHeaders) {
+      res.setHeader(k, sharedArrayBufferHeaders[k])
+    }
+    proxyRes.pipe(res)
+  })
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
   define: {
@@ -29,7 +42,7 @@ export default defineConfig({
     headers: {
       // SSmap 必须设置跨域头，否则无法使用 SharedArrayBuffer
       // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer
-      ...sharedArrayBufferHeaders
+      // ...sharedArrayBufferHeaders
     },
     proxy: {
       // ssmap遥感影像图代理
@@ -67,19 +80,8 @@ export default defineConfig({
         target: 'https://unpkg.com/cesium@1.107.2/',
         changeOrigin: true,
         selfHandleResponse: true,
-        configure: (proxy) => {
-          proxy.on('proxyRes', (proxyRes, req, res) => {
-            console.log(req.url)
-            for (const h in proxyRes.headers) {
-              res.setHeader(h, proxyRes.headers[h])
-            }
-            for (const k in sharedArrayBufferHeaders) {
-              res.setHeader(k, sharedArrayBufferHeaders[k])
-            }
-            proxyRes.pipe(res)
-          })
-        }
-      },
+        configure: proxyConfigure,
+      }
     },
   }
 })

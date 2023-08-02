@@ -5,7 +5,8 @@ import minimist from 'minimist'
 import prompts from 'prompts'
 import { isEmpty } from './emptyDir'
 import FRAMEWORKS, { Framework } from './frameworks'
-import maps, { layers } from './maps'
+// import maps, { layers } from './maps'
+import maps from './maps'
 
 const TEMPLATES = FRAMEWORKS.map((f) => (f.variants && f.variants.map((v) => v.name)) || [f.name]).reduce((a, b) => a.concat(b), [])
 
@@ -109,16 +110,16 @@ async function getPrompts(argv: { t?: string; template?: string } & minimist.Par
             return { title: m.color(m.display || m.name), value: m }
           }),
         },
-        {
-          type: 'select',
-          name: 'maps',
-          message: reset('选择地图底图:'),
-          hint: '使用上下键移动，回车确认',
-          initial: 0,
-          choices: layers.map((m) => {
-            return { title: m.color(m.display || m.name), value: m }
-          }),
-        },
+        // {
+        //   type: 'select',
+        //   name: 'maps',
+        //   message: reset('选择地图底图:'),
+        //   hint: '使用上下键移动，回车确认',
+        //   initial: 0,
+        //   choices: layers.map((m) => {
+        //     return { title: m.color(m.display || m.name), value: m }
+        //   }),
+        // },
       ],
       {
         onCancel: () => {

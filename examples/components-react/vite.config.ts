@@ -8,6 +8,18 @@ const sharedArrayBufferHeaders = {
   'Cross-Origin-Embedder-Policy': 'require-corp',
   'Cross-Origin-Opener-Policy': 'same-origin',
 }
+const proxyConfigure = (proxy) => {
+  proxy.on('proxyRes', (proxyRes, req, res) => {
+    console.log(req.url)
+    for (const h in proxyRes.headers) {
+      res.setHeader(h, proxyRes.headers[h])
+    }
+    for (const k in sharedArrayBufferHeaders) {
+      res.setHeader(k, sharedArrayBufferHeaders[k])
+    }
+    proxyRes.pipe(res)
+  })
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -61,18 +73,7 @@ export default defineConfig({
         target: 'https://unpkg.com/cesium@1.107.2/',
         changeOrigin: true,
         selfHandleResponse: true,
-        configure: (proxy, options) => {
-          proxy.on('proxyRes', (proxyRes, req, res) => {
-            console.log(req.url)
-            for (const h in proxyRes.headers) {
-              res.setHeader(h, proxyRes.headers[h])
-            }
-            for (const k in sharedArrayBufferHeaders) {
-              res.setHeader(k, sharedArrayBufferHeaders[k])
-            }
-            proxyRes.pipe(res)
-          })
-        }
+        configure: proxyConfigure,
       },
     },
   }

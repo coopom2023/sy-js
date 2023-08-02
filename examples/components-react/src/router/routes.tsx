@@ -3,6 +3,7 @@ import type { RouteObject } from 'react-router-dom'
 import Cesium from '../pages/map/cesium'
 import Leaflet from '../pages/map/leaflet'
 import Mapbox from '../pages/map/mapbox'
+import Mapv from '../pages/map/mapv'
 import OpenLayers from '../pages/map/openlayers'
 import SSmap from '../pages/map/ssmap'
 
@@ -46,6 +47,12 @@ export const routes: CurrentRouteObject[] = [
         // lazy: () => import('../pages/map/mapbox'),
         element: <Mapbox />,
         meta: { displayName: 'MapboxGL' }
+      },
+      {
+        path: 'mapv',
+        // lazy: () => import('../pages/map/mapbox'),
+        element: <Mapv />,
+        meta: { displayName: 'Mapv - 需要修改 vite.config.ts 注释 server.headers.sharedArrayBufferHeaders' }
       },
       {
         path: 'ssmap',
